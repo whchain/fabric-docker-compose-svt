@@ -248,7 +248,7 @@ chaincodeInvoke 0
 
 #Query on chaincode on Peer0/Org1
 echo "Querying chaincode on org1/peer0..."
-chaincodeInvoke1 0
+chaincodeQuery 0 success
 
 ## Install chaincode on Peer3/Org2
 echo "Installing chaincode on org2/peer3..."
@@ -256,7 +256,7 @@ installChaincode 3
 
 #Query on chaincode on Peer3/Org2, check if the result is 90
 echo "Querying chaincode on org2/peer3..."
-chaincodeInvoke1 3
+chaincodeQuery 3 success
 
 echo
 echo "===================== All GOOD, End-2-End execution completed ===================== "

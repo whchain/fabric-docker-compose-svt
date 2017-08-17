@@ -165,12 +165,11 @@ func (s *SmartContract) enrollDevice(stub shim.ChaincodeStubInterface, args []st
 		return shim.Error("Device already enrolled")
 	}
 
-	device := &Device{args[0], args[1], args[2], "enrolled"}
+	device := Device{args[0], args[1], args[2], "enrolled"}
 	deviceAsBytes, _ = json.Marshal(device)
 	stub.PutState("device"+args[0], deviceAsBytes)
 
-	res,_:=stub.GetState("device"+args[0])
-	return shim.Success(res)
+	return shim.Success(nil)
 }
 
 func (s *SmartContract) queryDevice(stub shim.ChaincodeStubInterface, args []string) sc.Response {
@@ -192,7 +191,7 @@ func (s *SmartContract) queryDevice(stub shim.ChaincodeStubInterface, args []str
 		return shim.Error("Device already used")
 	}
 
-	return shim.Success(nil)
+	return shim.Success([]byte("success"))
 }
 
 func (s *SmartContract) enrollWine(stub shim.ChaincodeStubInterface, args []string) sc.Response {
