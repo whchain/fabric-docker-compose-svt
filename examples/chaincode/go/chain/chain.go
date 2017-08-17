@@ -84,7 +84,7 @@ func (s *SmartContract) queryWine(stub shim.ChaincodeStubInterface, args []strin
 	}
 
 	device := Device{}
-	json.Unmarshal(deviceAsBytes, device)
+	json.Unmarshal(deviceAsBytes, &device)
 
 	if device.Status != "bind" {
 		return shim.Error("Wine not enrolled")
@@ -110,7 +110,7 @@ func (s *SmartContract) queryWine(stub shim.ChaincodeStubInterface, args []strin
 
 		wineAsBytes := response.Value
 		wine := Wine{}
-		json.Unmarshal(wineAsBytes, wine)
+		json.Unmarshal(wineAsBytes, &wine)
 
 		wineHistory := WineHistory{
 			Timestamp: time.Unix(response.Timestamp.Seconds, int64(response.Timestamp.Nanos)).String(),
@@ -138,7 +138,7 @@ func (s *SmartContract) transferWine(stub shim.ChaincodeStubInterface, args []st
 	}
 
 	device := Device{}
-	json.Unmarshal(deviceAsBytes, device)
+	json.Unmarshal(deviceAsBytes, &device)
 
 	if device.Status != "bind" {
 		return shim.Error("Wine not enrolled")
@@ -146,7 +146,7 @@ func (s *SmartContract) transferWine(stub shim.ChaincodeStubInterface, args []st
 
 	wineAsBytes, _ := stub.GetState("wine" + args[0])
 	wine := Wine{}
-	json.Unmarshal(wineAsBytes, wine)
+	json.Unmarshal(wineAsBytes, &wine)
 
 	wine.Owner = args[1]
 	wineAsBytes, _ = json.Marshal(wine)
@@ -184,7 +184,7 @@ func (s *SmartContract) queryDevice(stub shim.ChaincodeStubInterface, args []str
 	}
 
 	device := Device{}
-	json.Unmarshal(deviceAsBytes, device)
+	json.Unmarshal(deviceAsBytes, &device)
 
 	fmt.Printf("device status is %s", device.Status)
 	if device.Status != "enrolled" {
@@ -206,13 +206,12 @@ func (s *SmartContract) enrollWine(stub shim.ChaincodeStubInterface, args []stri
 	}
 
 	device := Device{}
-	json.Unmarshal(deviceAsBytes, device)
+	json.Unmarshal(deviceAsBytes, &device)
 
 	if device.Status != "enrolled" {
 		return shim.Error("Device already used")
 	}
 
-	json.Unmarshal(deviceAsBytes, &device)
 	device.Status = "bind"
 	deviceAsBytes, _ = json.Marshal(device)
 	stub.PutState("device"+args[0], deviceAsBytes)
