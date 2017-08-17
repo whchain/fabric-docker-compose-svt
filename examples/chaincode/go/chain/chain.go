@@ -178,7 +178,7 @@ func (s *SmartContract) queryDevice(stub shim.ChaincodeStubInterface, args []str
 	}
 
 	deviceAsBytes, _ := stub.GetState("device" + args[0])
-
+	fmt.Printf("deviceasbytes is %v", deviceAsBytes)
 	if deviceAsBytes == nil {
 		return shim.Error("Device not enrolled")
 	}
