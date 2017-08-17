@@ -65,8 +65,8 @@ func (s *SmartContract) Invoke(stub shim.ChaincodeStubInterface) sc.Response {
 		return s.transferWine(stub, args)
 	} else if function == "queryAllCars" {
 		return s.queryWine(stub, args)
-	} else if function == "queryDevice"{
-		return s.queryDevice(stub,args)
+	} else if function == "queryDevice" {
+		return s.queryDevice(stub, args)
 	}
 
 	return shim.Error("Invalid Smart Contract function name.")
@@ -172,7 +172,7 @@ func (s *SmartContract) enrollDevice(stub shim.ChaincodeStubInterface, args []st
 	return shim.Success(nil)
 }
 
-func (s *SmartContract) queryDevice(stub shim.ChaincodeStubInterface,args []string) sc.Response{
+func (s *SmartContract) queryDevice(stub shim.ChaincodeStubInterface, args []string) sc.Response {
 	if len(args) != 1 {
 		return shim.Error("Incorrect number of arguments. Expecting 1")
 	}
@@ -186,6 +186,7 @@ func (s *SmartContract) queryDevice(stub shim.ChaincodeStubInterface,args []stri
 	device := Device{}
 	json.Unmarshal(deviceAsBytes, device)
 
+	fmt.Printf("device status is %s", device.Status)
 	if device.Status != "enrolled" {
 		return shim.Error("Device already used")
 	}
