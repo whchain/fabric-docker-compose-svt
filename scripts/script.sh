@@ -224,6 +224,7 @@ instantiateChaincode 0
 #echo "Instantiating chaincode on org2/peer2..."
 #instantiateChaincode 2
 
+sleep 100
 #Invoke on chaincode on Peer0/Org1
 echo "Sending invoke transaction on org1/peer0..."
 chaincodeInvoke 0
