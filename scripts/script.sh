@@ -218,6 +218,10 @@ installChaincode 2
 
 #Instantiate chaincode on Peer2/Org2
 echo "Instantiating chaincode on org2/peer2..."
+instantiateChaincode 0
+
+#Instantiate chaincode on Peer2/Org2
+echo "Instantiating chaincode on org2/peer2..."
 instantiateChaincode 2
 
 #Invoke on chaincode on Peer0/Org1
