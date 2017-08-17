@@ -217,8 +217,8 @@ echo "Install chaincode on org2/peer2..."
 installChaincode 2
 
 #Instantiate chaincode on Peer2/Org2
-echo "Instantiating chaincode on org1/peer0..."
-instantiateChaincode 0
+echo "Instantiating chaincode on org2/peer2..."
+instantiateChaincode 2
 
 #Instantiate chaincode on Peer2/Org2
 #echo "Instantiating chaincode on org2/peer2..."
