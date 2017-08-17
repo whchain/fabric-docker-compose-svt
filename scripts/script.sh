@@ -217,12 +217,12 @@ echo "Install chaincode on org2/peer2..."
 installChaincode 2
 
 #Instantiate chaincode on Peer2/Org2
-echo "Instantiating chaincode on org2/peer2..."
+echo "Instantiating chaincode on org1/peer0..."
 instantiateChaincode 0
 
 #Instantiate chaincode on Peer2/Org2
-echo "Instantiating chaincode on org2/peer2..."
-instantiateChaincode 2
+#echo "Instantiating chaincode on org2/peer2..."
+#instantiateChaincode 2
 
 #Invoke on chaincode on Peer0/Org1
 echo "Sending invoke transaction on org1/peer0..."
