@@ -196,6 +196,23 @@ chaincodeInvoke () {
 	echo
 }
 
+chaincodeInvoke1 () {
+	PEER=$1
+	setGlobals $PEER
+	# while 'peer chaincode' command can get the orderer endpoint from the peer (if join was successful),
+	# lets supply it directly as we know it using the "-o" option
+	if [ -z "$CORE_PEER_TLS_ENABLED" -o "$CORE_PEER_TLS_ENABLED" = "false" ]; then
+		peer chaincode invoke -o orderer0.example.com:7050 -C $CHANNEL_NAME -n mycc -c '{"Args":["queryDevice","0xer3234242ddasds"]}' >&log.txt
+	else
+		peer chaincode invoke -o orderer0.example.com:7050  --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n mycc -c '{"Args":["queryDevice","0xer3234242ddasds"]}' >&log.txt
+	fi
+	res=$?
+	cat log.txt
+	verifyResult $res "Invoke execution on PEER$PEER failed "
+	echo "===================== Invoke transaction on PEER$PEER on channel '$CHANNEL_NAME' is successful ===================== "
+	echo
+}
+
 ## Create channel
 echo "Creating channel..."
 createChannel
@@ -231,7 +248,7 @@ chaincodeInvoke 0
 
 #Query on chaincode on Peer0/Org1
 echo "Querying chaincode on org1/peer0..."
-chaincodeQuery 0
+chaincodeInvoke1 0
 
 ## Install chaincode on Peer3/Org2
 echo "Installing chaincode on org2/peer3..."
@@ -239,7 +256,7 @@ installChaincode 3
 
 #Query on chaincode on Peer3/Org2, check if the result is 90
 echo "Querying chaincode on org2/peer3..."
-chaincodeQuery 3
+chaincodeInvoke1 3
 
 echo
 echo "===================== All GOOD, End-2-End execution completed ===================== "
