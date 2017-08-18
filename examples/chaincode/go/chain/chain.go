@@ -36,7 +36,6 @@ type WineHistory struct {
 }
 
 type WholeHistory struct {
-	Device        Device `json:"device"`
 	WineHistories []WineHistory `json:"wine_histories"`
 }
 
@@ -63,7 +62,7 @@ func (s *SmartContract) Invoke(stub shim.ChaincodeStubInterface) sc.Response {
 		return s.enrollWine(stub, args)
 	} else if function == "transferWine" {
 		return s.transferWine(stub, args)
-	} else if function == "queryAllCars" {
+	} else if function == "queryWine" {
 		return s.queryWine(stub, args)
 	} else if function == "queryDevice" {
 		return s.queryDevice(stub, args)
@@ -98,7 +97,6 @@ func (s *SmartContract) queryWine(stub shim.ChaincodeStubInterface, args []strin
 
 	// buffer is a JSON array containing historic values for the marble
 	wholeHistory := WholeHistory{
-		Device:        device,
 		WineHistories: []WineHistory{},
 	}
 
