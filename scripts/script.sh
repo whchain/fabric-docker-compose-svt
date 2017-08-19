@@ -179,6 +179,35 @@ chaincodeQuery () {
   fi
 }
 
+chaincodeQuery1 () {
+  PEER=$1
+  echo "===================== Querying on PEER$PEER on channel '$CHANNEL_NAME'... ===================== "
+  setGlobals $PEER
+  local rc=1
+  local starttime=$(date +%s)
+
+  # continue to poll
+  # we either get a successful response, or reach TIMEOUT
+  while test "$(($(date +%s)-starttime))" -lt "$TIMEOUT" -a $rc -ne 0
+  do
+     sleep 3
+     echo "Attempting to Query PEER$PEER ...$(($(date +%s)-starttime)) secs"
+     peer chaincode query -C $CHANNEL_NAME -n mycc -c '{"Args":["queryWine","0xer3234242ddasds"]}' >&log.txt
+     test $? -eq 0 && VALUE=$(cat log.txt | awk '/Query Result/ {print $NF}')
+     test "$VALUE" = "$2" && let rc=0
+  done
+  echo
+  cat log.txt
+  if test $rc -eq 0 ; then
+	echo "===================== Query on PEER$PEER on channel '$CHANNEL_NAME' is successful ===================== "
+  else
+	echo "!!!!!!!!!!!!!!! Query result on PEER$PEER is INVALID !!!!!!!!!!!!!!!!"
+        echo "================== ERROR !!! FAILED to execute End-2-End Scenario =================="
+	echo
+	exit 1
+  fi
+}
+
 chaincodeInvoke () {
 	PEER=$1
 	setGlobals $PEER
@@ -202,9 +231,9 @@ chaincodeInvoke1 () {
 	# while 'peer chaincode' command can get the orderer endpoint from the peer (if join was successful),
 	# lets supply it directly as we know it using the "-o" option
 	if [ -z "$CORE_PEER_TLS_ENABLED" -o "$CORE_PEER_TLS_ENABLED" = "false" ]; then
-		peer chaincode invoke -o orderer0.example.com:7050 -C $CHANNEL_NAME -n mycc -c '{"Args":["queryDevice","0xer3234242ddasds"]}' >&log.txt
+		peer chaincode invoke -o orderer0.example.com:7050 -C $CHANNEL_NAME -n mycc -c '{"Args":["enrollWine","0xer3234242ddasds","茅台","飞天","2017-08-08","贵州"，"2017-08-18","贵州"]}' >&log.txt
 	else
-		peer chaincode invoke -o orderer0.example.com:7050  --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n mycc -c '{"Args":["queryDevice","0xer3234242ddasds"]}' >&log.txt
+		peer chaincode invoke -o orderer0.example.com:7050  --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n mycc -c '{"Args":["enrollWine","0xer3234242ddasds","茅台","飞天","2017-08-08","贵州"，"2017-08-18","贵州"]}' >&log.txt
 	fi
 	res=$?
 	cat log.txt
@@ -212,6 +241,7 @@ chaincodeInvoke1 () {
 	echo "===================== Invoke transaction on PEER$PEER on channel '$CHANNEL_NAME' is successful ===================== "
 	echo
 }
+
 
 ## Create channel
 echo "Creating channel..."
@@ -241,7 +271,7 @@ instantiateChaincode 2
 #echo "Instantiating chaincode on org2/peer2..."
 #instantiateChaincode 2
 
-sleep 100
+sleep 10
 #Invoke on chaincode on Peer0/Org1
 echo "Sending invoke transaction on org1/peer0..."
 chaincodeInvoke 0
@@ -257,6 +287,15 @@ installChaincode 3
 #Query on chaincode on Peer3/Org2, check if the result is 90
 echo "Querying chaincode on org2/peer3..."
 chaincodeQuery 3 success
+
+sleep 10
+#Invoke on chaincode on Peer3/Org2
+echo "Sending invoke transaction on org2/peer3..."
+chaincodeInvoke1 3
+
+#Query on chaincode on Peer0/Org1
+echo "Querying chaincode on org1/peer0..."
+chaincodeQuery1 0 success
 
 echo
 echo "===================== All GOOD, End-2-End execution completed ===================== "
