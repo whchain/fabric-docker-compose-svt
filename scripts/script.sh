@@ -231,9 +231,9 @@ chaincodeInvoke1 () {
 	# while 'peer chaincode' command can get the orderer endpoint from the peer (if join was successful),
 	# lets supply it directly as we know it using the "-o" option
 	if [ -z "$CORE_PEER_TLS_ENABLED" -o "$CORE_PEER_TLS_ENABLED" = "false" ]; then
-		peer chaincode invoke -o orderer0.example.com:7050 -C $CHANNEL_NAME -n mycc -c '{"Args":["enrollWine","0xer3234242ddasds","maotai","feitian","2017-08-08","guizhou"，"2017-08-18","guizhou"]}' >&log.txt
+		peer chaincode invoke -o orderer0.example.com:7050 -C $CHANNEL_NAME -n mycc -c '{"Args":["enrollWine","0xer3234242ddasds","茅台","飞天","2017-08-08","贵州","2017-08-18","贵州"]}' >&log.txt
 	else
-		peer chaincode invoke -o orderer0.example.com:7050  --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n mycc -c '{"Args":["enrollWine","0xer3234242ddasds","maotai","feitian","2017-08-08","guizhou"，"2017-08-18","guizhou"]}' >&log.txt
+		peer chaincode invoke -o orderer0.example.com:7050  --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n mycc -c '{"Args":["enrollWine","0xer3234242ddasds","茅台","飞天","2017-08-08","贵州","2017-08-18","贵州"]}' >&log.txt
 	fi
 	res=$?
 	cat log.txt
