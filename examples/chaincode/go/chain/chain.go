@@ -229,10 +229,8 @@ func (s *SmartContract) enrollWine(stub shim.ChaincodeStubInterface, args []stri
 	device.Status = "bind"
 	deviceAsBytes, _ = json.Marshal(device)
 	fmt.Println(device)
-	updatedDeviceAsBytes,_:=json.Marshal(device)
 	fmt.Println(deviceAsBytes)
-	fmt.Println(updatedDeviceAsBytes)
-	stub.PutState("device"+args[0], updatedDeviceAsBytes)
+	stub.PutState("device"+args[0], deviceAsBytes)
 
 	var wine = Wine{args[1], args[2], args[3], args[4], args[5], args[6], args[0]}
 	wineAsBytes, _ := json.Marshal(wine)

@@ -293,6 +293,7 @@ sleep 10
 echo "Sending invoke transaction on org2/peer3..."
 chaincodeInvoke1 0
 
+sleep 30
 #Query on chaincode on Peer0/Org1
 echo "Querying chaincode on org1/peer0..."
 chaincodeQuery1 0 success
