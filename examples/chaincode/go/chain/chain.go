@@ -208,6 +208,7 @@ func (s *SmartContract) queryDevice(stub shim.ChaincodeStubInterface, args []str
 }
 
 func (s *SmartContract) enrollWine(stub shim.ChaincodeStubInterface, args []string) sc.Response {
+	fmt.Println("ex02 enroll wine")
 	if len(args) != 7 {
 		return shim.Error("Incorrect number of arguments. Expecting 7")
 	}
@@ -227,6 +228,8 @@ func (s *SmartContract) enrollWine(stub shim.ChaincodeStubInterface, args []stri
 
 	device.Status = "bind"
 	deviceAsBytes, _ = json.Marshal(device)
+	fmt.Println(device)
+	fmt.Println(deviceAsBytes)
 	stub.PutState("device"+args[0], deviceAsBytes)
 
 	var wine = Wine{args[1], args[2], args[3], args[4], args[5], args[6], args[0]}
