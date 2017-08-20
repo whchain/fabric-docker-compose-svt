@@ -296,7 +296,7 @@ chaincodeInvoke1 0
 sleep 30
 #Query on chaincode on Peer0/Org1
 echo "Querying chaincode on org1/peer0..."
-chaincodeQuery1 0 success
+chaincodeQuery1 0 {"wine_histories":[{"timestamp":"2017-08-20 02:02:45.124166625 +0000 UTC","wine":{"owner":"茅台","model":"飞天","out_date":"2017-08-18","out_place":"贵州","device_uid":"0xer3234242ddasds"}}]}
 
 echo
 echo "===================== All GOOD, End-2-End execution completed ===================== "
