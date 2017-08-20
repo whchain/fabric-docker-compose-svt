@@ -10,6 +10,10 @@ import (
 
 var log = shim.NewLogger("trustchain")
 
+func init()  {
+	log.SetLevel(shim.LogDebug)
+}
+
 // Define the Smart Contract structure
 type SmartContract struct {
 }
@@ -54,7 +58,7 @@ func (s *SmartContract) Init(APIstub shim.ChaincodeStubInterface) sc.Response {
  * The calling application program has also specified the particular smart contract function to be called, with arguments
  */
 func (s *SmartContract) Invoke(stub shim.ChaincodeStubInterface) sc.Response {
-
+	fmt.Println("ex02 Init")
 	// Retrieve the requested Smart Contract function and arguments
 	function, args := stub.GetFunctionAndParameters()
 	// Route to the appropriate handler function to interact with the ledger appropriately
@@ -74,6 +78,7 @@ func (s *SmartContract) Invoke(stub shim.ChaincodeStubInterface) sc.Response {
 }
 
 func (s *SmartContract) queryWine(stub shim.ChaincodeStubInterface, args []string) sc.Response {
+	fmt.Println("ex02 query wine")
 	if len(args) != 1 {
 		return shim.Error("Incorrect number of arguments. Expecting 1")
 	}
@@ -157,6 +162,7 @@ func (s *SmartContract) transferWine(stub shim.ChaincodeStubInterface, args []st
 }
 
 func (s *SmartContract) enrollDevice(stub shim.ChaincodeStubInterface, args []string) sc.Response {
+	fmt.Println("ex02 enroll device")
 	if len(args) != 3 {
 		return shim.Error("Incorrect number of arguments. Expecting 3")
 	}
@@ -175,6 +181,7 @@ func (s *SmartContract) enrollDevice(stub shim.ChaincodeStubInterface, args []st
 }
 
 func (s *SmartContract) queryDevice(stub shim.ChaincodeStubInterface, args []string) sc.Response {
+	fmt.Println("ex02 enroll device")
 	if len(args) != 1 {
 		return shim.Error("Incorrect number of arguments. Expecting 1")
 	}
