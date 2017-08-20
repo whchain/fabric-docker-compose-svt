@@ -91,6 +91,10 @@ func (s *SmartContract) queryWine(stub shim.ChaincodeStubInterface, args []strin
 
 	device := Device{}
 	json.Unmarshal(deviceAsBytes, &device)
+	fmt.Println(device)
+	fmt.Println(&device)
+	fmt.Println(device.Status)
+	fmt.Println(&device.Status)
 	log.Debugf("device: %v", device)
 	log.Debugf("device status: %s", device)
 
