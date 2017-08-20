@@ -291,7 +291,7 @@ chaincodeQuery 3 success
 sleep 10
 #Invoke on chaincode on Peer3/Org2
 echo "Sending invoke transaction on org2/peer3..."
-chaincodeInvoke1 3
+chaincodeInvoke1 0
 
 #Query on chaincode on Peer0/Org1
 echo "Querying chaincode on org1/peer0..."

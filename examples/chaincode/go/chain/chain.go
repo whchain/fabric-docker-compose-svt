@@ -225,8 +225,7 @@ func (s *SmartContract) enrollWine(stub shim.ChaincodeStubInterface, args []stri
 		return shim.Error("Device already used")
 	}
 
-	p:=&device
-	p.Status = "bind"
+	device.Status = "bind"
 	deviceAsBytes, _ = json.Marshal(device)
 	stub.PutState("device"+args[0], deviceAsBytes)
 
