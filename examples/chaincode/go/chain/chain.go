@@ -10,7 +10,7 @@ import (
 
 var log = shim.NewLogger("trustchain")
 
-func init()  {
+func init() {
 	log.SetLevel(shim.LogDebug)
 }
 
@@ -229,8 +229,10 @@ func (s *SmartContract) enrollWine(stub shim.ChaincodeStubInterface, args []stri
 	device.Status = "bind"
 	deviceAsBytes, _ = json.Marshal(device)
 	fmt.Println(device)
+	updatedDeviceAsBytes,_:=json.Marshal(device)
 	fmt.Println(deviceAsBytes)
-	stub.PutState("device"+args[0], deviceAsBytes)
+	fmt.Println(updatedDeviceAsBytes)
+	stub.PutState("device"+args[0], updatedDeviceAsBytes)
 
 	var wine = Wine{args[1], args[2], args[3], args[4], args[5], args[6], args[0]}
 	wineAsBytes, _ := json.Marshal(wine)
