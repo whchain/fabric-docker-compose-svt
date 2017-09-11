@@ -27,6 +27,7 @@ type Wine struct {
 	OutDate      string `json:"out_date"`
 	OutPlace     string `json:"out_place"`
 	DeviceUid    string `json:"device_uid"`
+	Location     string `json:"location"`
 }
 
 type Device struct {
@@ -160,6 +161,7 @@ func (s *SmartContract) transferWine(stub shim.ChaincodeStubInterface, args []st
 	json.Unmarshal(wineAsBytes, &wine)
 
 	wine.Owner = args[1]
+	wine.Location = args[2]
 	wineAsBytes, _ = json.Marshal(wine)
 	stub.PutState("wine"+args[0], wineAsBytes)
 	return shim.Success(nil)
@@ -232,7 +234,7 @@ func (s *SmartContract) enrollWine(stub shim.ChaincodeStubInterface, args []stri
 	fmt.Println(deviceAsBytes)
 	stub.PutState("device"+args[0], deviceAsBytes)
 
-	var wine = Wine{args[1], args[2], args[3], args[4], args[5], args[6], args[0]}
+	var wine = Wine{args[1], args[2], args[3], args[4], args[5], args[6], args[0],args[7]}
 	wineAsBytes, _ := json.Marshal(wine)
 	stub.PutState("wine"+args[0], wineAsBytes)
 
