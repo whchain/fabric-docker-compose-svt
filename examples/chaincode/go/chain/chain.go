@@ -139,7 +139,7 @@ func (s *SmartContract) queryWine(stub shim.ChaincodeStubInterface, args []strin
 }
 
 func (s *SmartContract) transferWine(stub shim.ChaincodeStubInterface, args []string) sc.Response {
-	if len(args) != 2 {
+	if len(args) != 3 {
 		return shim.Error("Incorrect number of arguments. Expecting 2")
 	}
 
@@ -211,7 +211,7 @@ func (s *SmartContract) queryDevice(stub shim.ChaincodeStubInterface, args []str
 
 func (s *SmartContract) enrollWine(stub shim.ChaincodeStubInterface, args []string) sc.Response {
 	fmt.Println("ex02 enroll wine")
-	if len(args) != 7 {
+	if len(args) != 8 {
 		return shim.Error("Incorrect number of arguments. Expecting 7")
 	}
 
