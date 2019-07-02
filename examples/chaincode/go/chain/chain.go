@@ -39,11 +39,16 @@ type Device struct {
 
 type WineHistory struct {
 	Timestamp string `json:"timestamp"`
-	Wine      Wine `json:"wine"`
+	Wine      Wine   `json:"wine"`
 }
 
 type WholeHistory struct {
 	WineHistories []WineHistory `json:"wine_histories"`
+}
+
+type Invoice struct {
+	Id   string `json:"id"`
+	Hash string `json:"hash"`
 }
 
 /*
@@ -73,6 +78,10 @@ func (s *SmartContract) Invoke(stub shim.ChaincodeStubInterface) sc.Response {
 		return s.queryWine(stub, args)
 	} else if function == "queryDevice" {
 		return s.queryDevice(stub, args)
+	} else if function == "enrollInvoice" {
+		return s.enrollInvoice(stub, args)
+	} else if function == "queryInvoice" {
+		return s.queryInvoice(stub, args)
 	}
 
 	return shim.Error("Invalid Smart Contract function name.")
@@ -186,6 +195,25 @@ func (s *SmartContract) enrollDevice(stub shim.ChaincodeStubInterface, args []st
 	return shim.Success(nil)
 }
 
+func (s *SmartContract) enrollInvoice(stub shim.ChaincodeStubInterface, args []string) sc.Response {
+	fmt.Println("ex02 enroll invoice")
+	if len(args) != 2 {
+		return shim.Error("Incorrect number of arguments. Expecting 2")
+	}
+
+	invoiceAsBytes, _ := stub.GetState("invoice" + args[0])
+
+	if invoiceAsBytes != nil {
+		return shim.Error("Invoice already enrolled")
+	}
+
+	invoice := Invoice{args[0], args[1]}
+	invoiceAsBytes, _ = json.Marshal(invoice)
+	stub.PutState("invoice"+args[0], invoiceAsBytes)
+
+	return shim.Success([]byte("success"))
+}
+
 func (s *SmartContract) queryDevice(stub shim.ChaincodeStubInterface, args []string) sc.Response {
 	fmt.Println("ex02 enroll device")
 	if len(args) != 1 {
@@ -204,6 +232,29 @@ func (s *SmartContract) queryDevice(stub shim.ChaincodeStubInterface, args []str
 	log.Debugf("device status is %s", device.Status)
 	if device.Status != "enrolled" {
 		return shim.Error("Device already used")
+	}
+
+	return shim.Success([]byte("success"))
+}
+
+func (s *SmartContract) queryInvoice(stub shim.ChaincodeStubInterface, args []string) sc.Response {
+	fmt.Println("ex02 query invoice")
+	if len(args) != 2 {
+		return shim.Error("Incorrect number of arguments. Expecting 2")
+	}
+
+	invoiceAsBytes, _ := stub.GetState("invoice" + args[0])
+	log.Debugf("invoiceasbytes is %v", invoiceAsBytes)
+	if invoiceAsBytes == nil {
+		return shim.Error("Invoice not enrolled")
+	}
+
+	invoice := Invoice{}
+	json.Unmarshal(invoiceAsBytes, &invoice)
+
+	log.Debugf("invoice hash is %s", invoice.Hash)
+	if invoice.Hash != args[1] {
+		return shim.Error("Invoice hash not existed")
 	}
 
 	return shim.Success([]byte("success"))
@@ -234,7 +285,7 @@ func (s *SmartContract) enrollWine(stub shim.ChaincodeStubInterface, args []stri
 	fmt.Println(deviceAsBytes)
 	stub.PutState("device"+args[0], deviceAsBytes)
 
-	var wine = Wine{args[1], args[2], args[3], args[4], args[5], args[6], args[0],args[7]}
+	var wine = Wine{args[1], args[2], args[3], args[4], args[5], args[6], args[0], args[7]}
 	wineAsBytes, _ := json.Marshal(wine)
 	stub.PutState("wine"+args[0], wineAsBytes)
 
